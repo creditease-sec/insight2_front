@@ -1,0 +1,53 @@
+{
+    "message": {
+        "hello": "Hello, this is sumeru",
+        "confirm":"confirm"
+    },
+    "title": {
+        "title":"INSIGHT II",
+        "system_index":"HOME",
+        "vul":"VUL",
+        "log":"LOG",
+        "asset":"ASSET",
+        "app":"APP",
+        "knowledge":"KNOWLEDGE",
+        "paper":"PAPER",
+        "user":"USER",
+        "role":"ROLE",
+        "point":"POINT",
+        "group":"GROUP",
+        "philistine":"PHILISTINE",
+        "setting":"SETTING",
+        "cron":"CRON",
+        "doc":"DOC",
+        "use":"USE",
+        "ext":"EXT"
+        
+    },
+    "label": {
+        "system_status": "Overview",
+        "cores":"Core(s)",
+        "system":"System",
+        "running":"Running",
+        "total":"Total",
+        "success":"Success",
+         "running_task" : "running",
+        "failure":"Failure",
+        "scheduling":"Scheduled",
+        "server_status":"Server Status",
+        "memory":"Memory",
+        "disk":"Disk",
+        "load":"LA",
+        "network_traffic":"Network Traffic",
+        "receiving":"Receiving",
+        "sending":"Sending",
+        "total_received":"Total Received",
+        "total_sent":"Total Sent",
+        "seconds":"Second(s)",
+        "minutes":"Minute(s)",
+        "hours":"Hour(s)",
+        "days":"Day(s)",
+        "exit":"Exit",
+        "about":"About CESEC"
+    }
+}

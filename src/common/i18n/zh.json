@@ -1,0 +1,51 @@
+{
+    "message": {
+        "confirm":"确认"
+    },
+    "title": {
+        "title":"洞察 - 贰",
+        "system_index":"总览",
+        "vul":"漏洞",
+        "log":"日志",
+        "asset":"资产",
+        "app":"应用",
+        "knowledge":"知识",
+        "paper":"文章",
+        "user":"用户",
+        "role":"角色",
+        "point":"积分",
+        "group":"组",
+        "philistine":"俗事",
+        "setting":"设置",
+        "doc":"文档",
+        "use":"使用",
+        "ext":"扩展"
+    },
+    "label": {
+        "system_status": "总览",
+        "cores":"核",
+        "system":"系统",
+        "running":"已不间断运行",
+        "total":"任务总数",
+        "success":"执行成功",
+        "running_task" : "运行中",
+        "failure":"执行失败",
+        "scheduling":"计划任务",
+        "nodes":"分布式节点",
+        "server_status":"服务器状态",
+        "memory":"内存",
+        "disk":"磁盘",
+        "load":"负载",
+        "network_traffic":"网络流量",
+        "receiving":"下行速度",
+        "sending":"上行速度",
+        "total_received":"总接收",
+        "total_sent":"总发送",
+        "seconds":"秒",
+        "minutes":"分钟",
+        "hours":"小时",
+        "days":"天",
+        "exit":"退出",
+        "about":"关于"
+    }
+}
