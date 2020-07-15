@@ -24,7 +24,7 @@
             <el-form-item label="端口 *">
               <el-input v-model="form.port"></el-input>
             </el-form-item>
-            <el-form-item label="帐号">
+            <el-form-item label="帐号 *">
               <el-input v-model="form.account"></el-input>
             </el-form-item>
             <el-form-item label="密码">
@@ -35,7 +35,7 @@
               <el-input v-model="form.basedn"></el-input>
             </el-form-item>
 
-            <el-form-item label="登录名属性 *">
+            <el-form-item label="登录名属性">
               <el-input v-model="form.loginname_property"></el-input>
             </el-form-item>
 
@@ -57,7 +57,13 @@
             <el-option key="0" label="禁用" value="0">禁用</el-option>
           </el-select>
         </el-form-item>
-
+ 
+        <el-form-item label="默认">
+          <el-select v-model="form.default" placeholder="请选择">
+            <el-option key="1" label="是" value="1">是</el-option>
+            <el-option key="0" label="否" 否="0">否</el-option>
+          </el-select>
+        </el-form-item>
             <el-form-item v-if="form_errors.length" style="color:#f78989">
               <b>出现以下问题 :</b>
               <ul>
@@ -98,7 +104,7 @@ export default {
     if (this.viewuser.id){
           this.form = this.viewuser.config
           this.form.id =  this.viewuser.id
-          this.buttton_name = "编辑"
+          this.buttton_name = "保存"
     }
   },
   methods: {
@@ -150,8 +156,8 @@ export default {
       if (!this.form.basedn) {
         this.form_errors.push("请输入Base DN");
       }
-      if (!this.form.loginname_property) {
-        this.form_errors.push("请输入登录名属性");
+      if (!this.form.account) {
+        this.form_errors.push("请输入帐号");
       }
 
     }

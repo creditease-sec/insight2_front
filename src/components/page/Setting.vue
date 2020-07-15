@@ -120,6 +120,12 @@
           </template>
                   </el-table-column>
                   <el-table-column label="人数" prop="usercount" min-width="55"></el-table-column>
+                  <el-table-column label="默认" prop="config.default" min-width="40">
+                    
+                        <template slot-scope="scope">
+           <span  class="insight_sensitive">     {{scope.row.config.default?"✓":""}}  </span>
+          </template>
+                  </el-table-column>
                   <el-table-column label="状态" prop="enable">
               <template slot-scope="scope">
             {{scope.row.enable ===1 ? "启用":"禁用"}}
@@ -127,9 +133,9 @@
                   </el-table-column>
                   <el-table-column label="操作" min-width="100">
                     <template slot-scope="scope">
-                      <span size="mini"    @click="testAuth(scope.$index, scope.row)">
+                      <el-button size="mini"    @click="testAuth(scope.$index, scope.row)">
                         测试
-                      </span>
+                      </el-button>
                       <span size="mini"   @click="handleEdit(scope.$index, scope.row)">
                         <i class="el-iconbianji2 iconfont_no_margin sumeru_op_button"></i>
                       </span>

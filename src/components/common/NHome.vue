@@ -132,7 +132,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="n_personal_setting">个人设置</el-dropdown-item>
               <el-dropdown-item command="n_changepw">修改密码</el-dropdown-item>
-              <el-dropdown-item divided command="loginout">{{$t("label.exit")}}</el-dropdown-item>
+              <el-dropdown-item divided command="logout">{{$t("label.exit")}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -214,10 +214,11 @@ export default {
       });
     },
     handleCommand(command) {
-      if (command == "loginout") {
+      if (command == "logout") {
         let that = this;
         this.$axios.get("/api/logout").then(res => {
           if (res.data.status == 1) {
+            console_log("退出登录")
             sessionStorage.removeItem("__UID__");
             that.$cookies.remove("__UID__");
             this.$router.push("/login");
