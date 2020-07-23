@@ -138,7 +138,7 @@ export default {
           this.form.host &&
           this.form.port &&
           this.form.basedn &&
-          this.form.loginname_property) {
+          this.form.account) {
         return true;
       }
 

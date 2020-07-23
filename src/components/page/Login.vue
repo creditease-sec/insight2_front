@@ -109,7 +109,7 @@ export default {
     },
 
     getCaptcha() {
-      this.$axios.get("/api/gencode").then(res => {
+      this.$axios.get("/api/gencode?t="+new Date().getTime()).then(res => {
         this.captcha_img_data = res.data.image;
       });
     },
