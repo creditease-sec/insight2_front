@@ -1270,7 +1270,7 @@ export default {
 
     doAudit(e) {
       this.$axios
-        .post("api/" + this.cur_audit_status, trans_params(this.form))
+        .post("api" + this.cur_audit_status, trans_params(this.form))
         .then(res => {
           if (res.data.status == 1) {
             this.$message.success("操作成功");
@@ -1284,7 +1284,7 @@ export default {
     },
     doSolve(e) {
       this.$axios
-        .post("api/" + this.cur_audit_status, trans_params(this.form))
+        .post("api" + this.cur_audit_status, trans_params(this.form))
         .then(res => {
           if (res.data.status == 1) {
             this.$message.success("操作成功");
@@ -1341,7 +1341,7 @@ export default {
       delete this.form.create_time;
       this.form.enable = row.enable == 1 ? "1" : "0";
       this.form.app_name = row.appname;
-      this.form.article_id = row.id;
+      this.form.article_id = row.article_id;
       this.form.vul_poc = filterXSS(row.vul_poc);
       this.form.vul_solution = filterXSS(row.vul_solution);
       this.form.vul_type = row.vul_type.toString();
