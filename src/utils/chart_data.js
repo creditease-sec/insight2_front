@@ -25,6 +25,9 @@ export function getChartData(type,data) {
         case "vul_source_data":{
             if(data){
                 vul_source_data.series[0].data =data .data
+                data .data.forEach((item,index,array)=>{
+                    vul_source_data.legend.data.push(item.name)
+                })
             }
 
             return vul_source_data
@@ -120,9 +123,17 @@ var hot_date_data = getVirtulData(2019)
 // console.log(hot_data);
 
 var vul_ratio_data_template = {
+    legend: {
+      itemWidth:5,
+      itemHeight:5,
+      icon: 'circle',
+      orient: 'vertical',
+      left: 0,
+      data: ['已完成', '待审核', '暂不处理', '已确认', '修复中','复测中']
+    },
 
     title: {
-        text: '漏洞状态比例',
+        text: '状态比例',
         left: 'center',
         textStyle: {
             color: '#000'
@@ -481,6 +492,15 @@ var rank_distribution_data = {
 };
 
 let vul_source_data = {
+    legend: {
+      itemWidth:5,
+      itemHeight:5,
+      icon: 'pin',
+      orient: 'horizontal',
+      left: 0,
+      bottom:0,
+      data: []
+    },
     title: {
       text: "漏洞来源",
       left: "center",
@@ -494,7 +514,7 @@ let vul_source_data = {
       {
         name: "漏洞比例",
         type: "pie",
-        radius: "50%",
+        radius: "25%",
         center: ["50%", "50%"],
         data: [
 

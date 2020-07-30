@@ -194,9 +194,12 @@ export default {
     getUserInfo() {
       let that = this;
       this.$axios.get(this.user_info_url, {}).then(res => {
+    
         if (res.data.status_code == 403) {
-          console.log("未登录");
-          this.$router.push("/login");
+          that.$message.error("未登录");
+          sessionStorage.removeItem("__UID__");
+          that.$cookies.remove("__UID__");
+          that.$router.push("/login");
         }
         this.avatar_url = res.data.avatar;
         this.username = res.data.username;

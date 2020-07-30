@@ -45,7 +45,7 @@
         </el-row>
         <hr style="margin-top:20px;margin-bottom:20px;background-color:#606266;height: 1px;" />
         <div style="width:60%;">
-          <div v-html="filterXSS(viewvul.content)" class="markdown-body"></div>
+          <div v-html="viewvul.content_type==1?marked(filterXSS(viewvul.md_raw_content)):viewvul.content" class="markdown-body"></div>
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@ import {
   getStaticColors
 } from "@/utils/common";
 import { global_config } from "@/utils/global_config";
-import "mavon-editor/dist/css/index.css";
+import  "static/css/markdown_style.css";
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import Print from "print-js";

@@ -97,13 +97,19 @@ export default {
         .get(this.user_info_url, {
         })
         .then(res => {
+          if(res.data.status_code == 403){
+              console.log("未登录");
+              sessionStorage.removeItem("__UID__");
+              that.$cookies.remove("__UID__");
+              that.$router.push("/login");
+          }
           this.avatar_url = res.data.avatar
           this.username = res.data.username
           this.nickname = res.data.nickname
           this.message = res.data.message_count
-         sessionStorage.setItem("userinfo", JSON.stringify( res.data));
+          sessionStorage.setItem("userinfo", JSON.stringify( res.data));
  
-         if(res.data. iwmo == 1){
+         if(res.data.iwmo == 1){
           that.$watermark.pointMark(this.username)
         }
         });

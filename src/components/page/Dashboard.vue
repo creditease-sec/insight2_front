@@ -9,7 +9,7 @@
   
                 <countTo
                   :startVal="startVal"
-                  :endVal="dashboard_data.summary.total_vul_count"
+                  :endVal="dashboard_data.summary.current_month_vul_count"
                   :duration="2000"
                   :decimals="0"
                   class="big-num"
@@ -20,10 +20,10 @@
                 > <span style="margin-right:3px;">环比上月     </span>
                  <span v-if="dashboard_data.summary.vul_increase_count>=0"
                   style="color:#3e9b87f3;float:right;font-size: 10px;margin-bottom:5px;"
-                >{{dashboard_data.summary.vul_increase_percent}}%({{dashboard_data.summary.vul_increase_count}})</span>
+                > +{{dashboard_data.summary.vul_increase_percent}}%({{dashboard_data.summary.vul_increase_count}})</span>
                   <span v-if="dashboard_data.summary.vul_increase_count<0"
                   style="color:#ee6a6a;float:right;font-size: 10px;margin-bottom:5px;"
-                >{{dashboard_data.summary.vul_increase_percent}}%({{dashboard_data.summary.vul_increase_count}})</span>
+                > -{{dashboard_data.summary.vul_increase_percent}}%({{dashboard_data.summary.vul_increase_count}})</span>
                 </span>
               </el-card>
             </el-row>
@@ -52,7 +52,7 @@
                   ref="vul_ratio_data"
                   :options="vul_ratio_data"
                   autoresize
-                  style="width:75%;;margin-left:12%;"
+                  style="width:110%;"
                 />
               </el-card>
             </el-row>

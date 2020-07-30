@@ -16,7 +16,7 @@
           <el-button size="mini" style="float:right" @click="doPrint">打印</el-button>
 
           <br />
-          <hr style="margin-top:20px;margin-bottom:20px;background-color:#606266;height: 1px;" />
+          <hr style="margin-top:20px;margin-bottom:20px;background-color:#606266;height:1px;" />
           <br />
         </el-row>
         <el-row>
@@ -28,7 +28,7 @@
 
               <el-form-item label="解决方案">
                 <span
-                  style="color:409eff ;font-weight:bold;cursor: pointer;"
+                  style="color:409eff ;font-weight:bold;cursor:pointer;"
                   type="text"
                   @click="$router.push( {path:'/viewpaperdetail?id='+viewvul.article_id})"
                 >{{viewvul.article_name?viewvul.article_name:"无" }}</span>
@@ -82,7 +82,7 @@
             </el-form>
           </el-col>
         </el-row>
-        <hr style="margin-top:20px;margin-bottom:20px;background-color:#606266;height: 1px;" />
+        <hr style="margin-top:20px;margin-bottom:20px;background-color:#606266;height:1px;" />
         <div style="width:60%;">
           <div v-html="marked(filterXSS(viewvul.vul_poc)) " class="markdown-body insight_sensitive"></div>
         </div>
@@ -106,8 +106,7 @@ import {
   getStaticColors
 } from "@/utils/common";
 import { global_config } from "@/utils/global_config";
-
-import "mavon-editor/dist/css/index.css";
+import  "static/css/markdown_style.css";
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import Print from "print-js";
@@ -115,12 +114,12 @@ import Print from "print-js";
 export default {
   data() {
     return {
-      static_config: global_config,
-      viewvul: {}
+      static_config:global_config,
+      viewvul:{}
     };
   },
-  computed: {
-    risklevel: function() {
+  computed:{
+    risklevel:function() {
       if (this.viewvul.self_rank >= 0 && this.viewvul.self_rank < 6) {
         return "低危";
       } else if (this.viewvul.self_rank < 11) {
@@ -153,7 +152,7 @@ export default {
   mounted() {
     this.$desensitive();
   },
-  filters: {
+  filters:{
     getDateDiff_timestamp(time) {
       return getDateDiff_timestamp(time);
     },
@@ -172,18 +171,18 @@ export default {
       }
     }
   },
-  methods: {
+  methods:{
     doPrint() {
       Print({
-        printable: "vul_report",
-        type: "html",
-         targetStyles: ["*"]
+        printable:"vul_report",
+        type:"html",
+         targetStyles:["*"]
       });
     },
     getPdf() {
       var title = this.viewvul.vul_name;
       html2Canvas(document.querySelector("#vul_report"), {
-        allowTaint: true
+        allowTaint:true
       }).then(function(canvas) {
         let contentWidth = canvas.width;
         let contentHeight = canvas.height;
@@ -217,67 +216,66 @@ export default {
 
 <style scoped>
 .handle-box {
-  margin-bottom: 20px;
+  margin-bottom:20px;
 }
 
 .handle-select {
-  width: 120px;
+  width:120px;
 }
 
 .handle-input {
-  width: 150px;
+  width:150px;
 
-  display: inline-block;
+  display:inline-block;
 }
 
 .label {
-  width: 90px;
-  color: #99a9bf;
+  width:90px;
+  color:#99a9bf;
 }
 .el-form-item {
-  font-size: 5px !important;
-  margin-right: 0;
-  margin-bottom: 0;
-  width: 90%;
+  font-size:5px !important;
+  margin-right:0;
+  margin-bottom:0;
+  width:90%;
 }
 .el-form-item--small.el-form-item {
-  margin-bottom: 0 !important;
+  margin-bottom:0 !important;
 }
 .data-content {
-  color: rgb(71, 158, 216) !important;
-  font-weight: bold;
+  color:rgb(71, 158, 216) !important;
+  font-weight:bold;
 }
 .data-content-yellow {
-  color: rgb(147, 153, 57) !important;
+  color:rgb(147, 153, 57) !important;
 }
 .data-content-orange {
-  color: rgb(219, 39, 48) !important;
+  color:rgb(219, 39, 48) !important;
 }
 .data-content-grey {
-  color: #69827c !important;
+  color:#69827c !important;
 }
 .data-content-blue {
-  color: #112041;
+  color:#112041;
 }
 .data-content-green {
-  color: #20856d !important;
+  color:#20856d !important;
 }
 .vuln-title {
-  font-size: 30px;
-  font-weight: normal;
-  line-height: 1.3;
-  color: #20856d;
-  letter-spacing: -1px;
-  margin-bottom: 80px;
-}
-.markdown-body > img {
-  width: 50%;
+  font-size:30px;
+  font-weight:normal;
+  line-height:1.3;
+  color:#20856d;
+  letter-spacing:-1px;
+  margin-bottom:80px;
 }
 
 .block {
-  border: solid 0.1px #dbdbdb;
-  background: #f8f8f8;
-  padding: 60px;
-  margin: 10px;
+  border:solid 0.1px #dbdbdb;
+  background:#f8f8f8;
+  padding:60px;
+  margin:10px;
 }
+
+
 </style>

@@ -108,7 +108,7 @@ import {
 } from "@/utils/common";
 import { global_config } from "@/utils/global_config";
 
-import "mavon-editor/dist/css/index.css";
+import  "static/css/markdown_style.css";
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import Print from "print-js";
