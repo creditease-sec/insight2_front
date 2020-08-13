@@ -212,7 +212,6 @@
 
             <el-form ref="form"  label-width="120px">
               <el-form-item label="操作">
-                <el-button type="danger" @click="initDB">初始化数据库</el-button>
                 <el-button type="warning" @click="genEgData">生成示例数据</el-button>
               </el-form-item>
 
