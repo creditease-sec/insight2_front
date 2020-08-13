@@ -196,13 +196,28 @@ export default {
             }
           ]
         },
-
         {
           icon: "iconfont el-iconapi",
           index: "extension",
           title: this.$t("title.ext"),
-          permission: ["action.extension.ExtensionList"]
-        }
+          permission: ["action.extension.ExtensionList"],
+          subs: [
+           {
+              icon: "iconfont el-iconapi",
+              index: "extension",
+              title: this.$t("title.ext"),
+              permission: ["action.extension.ExtensionList"]
+            },
+            {
+              icon: "iconfont el-iconwendangdocument69",
+              index: "cron",
+              title: this.$t("title.cron"),
+              permission: "default_show"
+            }
+          ]
+        },
+        
+
       ]
     };
   },
