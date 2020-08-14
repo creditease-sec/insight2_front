@@ -903,7 +903,7 @@ export default {
 
     doAudit(e) {
 
-          this.$axios.post("api/"+this.cur_audit_status, trans_params(this.form)).then(res => {
+          this.$axios.post("api"+this.cur_audit_status, trans_params(this.form)).then(res => {
             if (res.data.status == 1) {
               this.$message.success("操作成功");
               this.getData();
@@ -918,7 +918,7 @@ export default {
     },
     doSolve(e) {
 
-          this.$axios.post("api/"+this.cur_audit_status, trans_params(this.form)).then(res => {
+          this.$axios.post("api"+this.cur_audit_status, trans_params(this.form)).then(res => {
             if (res.data.status == 1) {
               this.$message.success("操作成功");
               this.getData();
