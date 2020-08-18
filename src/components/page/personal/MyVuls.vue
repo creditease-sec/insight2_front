@@ -38,9 +38,10 @@
         <el-button type="primary" icon="el-icon-search" @click="search" size="mini">搜索</el-button>
 
         <div style="float:right">
-          <span  v-show="isShowText" class="ec-shake-time" style="font-weight: 400; color: #606266;  font-size: 13px" > 请选择一条数据以显示可操作项</span>
-            <span      v-show="isShowNoOp"
-            style="font-weight: 400; color: #606266;  font-size: 13px"
+          <span  v-show="isShowText" class="ec-shake-time blink" style="font-weight: 400; color: #114c2b;  font-size: 13px" > 
+            请单击选择一条数据以显示可操作项</span>
+            <span      v-show="isShowNoOp" class="blink"
+            style="font-weight: 400; color: #114c2b;  font-size: 13px"
           >无可用的操作</span>
 
           <el-button size="mini" type="primary" @click="updateCur_entity();solveVisible=true;cur_audit_status='/auditing/fixing' " v-show="isShowConfirmButton">已知悉</el-button>
@@ -53,10 +54,12 @@
       <el-table
         :data="tableData"
         border
+        @select="select"
         @selection-change="handleSelectionChange"
         @current-change="handleCurrentChangeRow"
         highlight-current-row
         @sort-change="sortChange"
+        ref="vulTable"
       >
         <el-table-column type="selection" width="45"></el-table-column>
         <!-- <el-table-column prop="id" label="ID" min-width="40"></el-table-column> -->
@@ -601,6 +604,7 @@ export default {
     this.getStatusGroup()
     this.getRoleList();
     this.getData();
+  
   },
     updated() {
     this.$desensitive()
@@ -711,6 +715,16 @@ export default {
   },
 
   methods: {
+
+    select(selection, row){	
+			  this.$refs.vulTable.clearSelection();
+			if(selection.length == 0) return ;
+      this.$refs.vulTable.toggleRowSelection(row, true);
+      this.$refs.vulTable.setCurrentRow(row);
+      
+      this.cur_entity = row;
+    },
+    
     exportCSV(){
         this.$axios({
           method: "get",
@@ -903,7 +917,7 @@ export default {
 
     doAudit(e) {
 
-          this.$axios.post("api/"+this.cur_audit_status, trans_params(this.form)).then(res => {
+          this.$axios.post("api"+this.cur_audit_status, trans_params(this.form)).then(res => {
             if (res.data.status == 1) {
               this.$message.success("操作成功");
               this.getData();
@@ -918,7 +932,7 @@ export default {
     },
     doSolve(e) {
 
-          this.$axios.post("api/"+this.cur_audit_status, trans_params(this.form)).then(res => {
+          this.$axios.post("api"+this.cur_audit_status, trans_params(this.form)).then(res => {
             if (res.data.status == 1) {
               this.$message.success("操作成功");
               this.getData();
@@ -955,11 +969,13 @@ export default {
     },
 
     handleCurrentChange(val) {
+      
       this.cur_page = val;
       this.getData();
     },
 
     handleCurrentChangeRow(val) {
+      // this.multipleSelection = [selection]
       this.cur_entity = val;
     },
 
@@ -1031,6 +1047,9 @@ export default {
 </script>
 
 <style scoped>
+th .el-checkbox {
+display: none !important;
+}
 .already_read{
   color:#ad8386;border-width: 1px;
     border-style: solid;
@@ -1048,27 +1067,34 @@ export default {
   display: inline-block;
 }
 
-/*仿闹钟振铃效果*/
-.ec-shake-time{
-    animation: shake-time 1s ease;
+ 
+@keyframes blink{
+  0%{opacity: 1;}
+  100%{opacity: 0.15;} 
+}
+/* 添加兼容性前缀 */
+@-webkit-keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.15; }
+}
+@-moz-keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.15; }
+}
+@-ms-keyframes blink {
+    0% {opacity: 1; } 
+    100% { opacity: 0.15;}
+}
+@-o-keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.15; }
 }
 
-@keyframes shake-time {
-    0% {
-        transform: scale(1);
-    }
-    10%, 20% {
-        transform: scale(0.9) rotate(-3deg);
-    }
-    30%, 50%, 70%, 90% {
-        transform: scale(1.1) rotate(3deg);
-    }
-    40%, 60%, 80% {
-        transform: scale(1.1) rotate(-3deg);
-    }
-    100% {
-        transform: scale(1) rotate(0);
-    }
+.blink{
+    animation: blink 2s linear infinite;  
+    -webkit-animation: blink 2s linear infinite;
+    -moz-animation: blink 2s linear infinite;
+    -ms-animation: blink 2s linear infinite;
+    -o-animation: blink 2s linear infinite;
 }
-
 </style>
