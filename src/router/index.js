@@ -21,7 +21,12 @@ export const constantRouterMap = [
                 component: resolve => require(['../components/page/Dashboard.vue'], resolve),
                 meta: { title: "System", noKeepAlive: true, permission: true }
             },
-
+            {
+                path: '/cron',
+                name: 'cron',
+                component: resolve => require(['../components/page/cron/Cron.vue'], resolve),
+                meta: { title: "Cron", noKeepAlive: true }
+            },
             {
                 path: '/view_asset_detail',
                 name: 'view_asset_detail',
@@ -89,10 +94,16 @@ export const constantRouterMap = [
                 meta: { title: "Asset", noKeepAlive: true }
             },
             {
+                path: '/asset_import',
+                name: 'asset_import',
+                component: resolve => require(['../components/page/asset/subpage/AssetImport.vue'], resolve),
+                meta: { title: "AssetImport", noKeepAlive: true }
+            },
+            {
                 path: '/app',
                 name: 'app',
                 component: resolve => require(['../components/page/asset/App.vue'], resolve),
-                meta: { title: "App" }
+                meta: { title: "App" , noKeepAlive: true}
             },
             {
                 path: '/doc',
