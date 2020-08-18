@@ -14,7 +14,7 @@
         <el-button
           type="primary"
           icon="el-icon-circle-plus"
-          @click="getAssetList();createVisible=true; form={enable:'1'}"
+          @click="getAssetList();createVisible=true; form={enable:'1'};curFormName='createForm'"
           size="mini"
         >新增应用</el-button>
         <el-input
@@ -32,7 +32,8 @@
             icon="search"
             @click="JSON.stringify(cur_entity) == '{}'||cur_entity == null ? $message.info('请选择应用' ):secTestRecordVisible=true"
           >记录安全测试</el-button>
-          <el-button size="mini" icon="search" @click="dataDel()">批量删除</el-button>
+                     <el-button size="mini" icon="search" @click="dataDel()">批量删除</el-button>
+          <el-button size="mini" icon="search" v-if="app_id!=null" @click="$router.go(-1)">返回</el-button>
         </div>
       </div>
 
@@ -65,7 +66,7 @@
         <el-table-column prop="group_name" min-width="100" label="所属团队">
 
                     <template slot-scope="scope">
-            <span class="insight_sensitive">{{scope.row.group_name}}</span>
+            <span class="insight_sensitive">{{scope.row.group_name+ (scope.row.parent_name?" "+scope.row.parent_name:"")}}</span>
           </template>
         </el-table-column>
 
@@ -147,7 +148,7 @@
               <i class="el-iconjihuarenwu2 iconfont_no_margin sumeru_op_button"></i>
             </span>
 
-            <span size="mini" v-tooltip="'编辑'" @click="getData();handleEdit(scope.$index, scope.row)">
+            <span size="mini" v-tooltip="'编辑'" @click="curFormName='editForm';isChangeVisible=false;getData();handleEdit(scope.$index, scope.row)">
               <i class="el-iconbianji2 iconfont_no_margin sumeru_op_button"></i>
             </span>
 
@@ -368,15 +369,17 @@
 
         <el-form-item label="安全官">
         <span style="    font-weight: bold;
-    color: #3e9b87f3;">  {{old_sec_owner}}  </span> <span style="box-sizing: border-box;
+    ">  {{old_sec_owner}}  </span> <el-button size="mini" style="color: #3e9b87f3;box-sizing:
     white-space: normal;
     word-break: break-all;
-    line-height: 23px;">变更为</span>
+   cursor:pointer" @click="isChangeVisible=true"> 变更 </el-button>
           <el-autocomplete
+            v-if="isChangeVisible"
             v-model="form.sec_owner_name"
             :fetch-suggestions="querySearchAsync"
             placeholder="请输入内容"
             @select="handleSelect"
+         
           ></el-autocomplete>
         </el-form-item>
 
@@ -531,6 +534,9 @@ export default {
     };
 
     return {
+      app_id:null,
+      isChangeVisible:false,
+      curFormName:"createForm",
       old_sec_owner:"",
       cronPopover: false,
       cron: "",
@@ -599,6 +605,10 @@ export default {
   },
 
   created() {
+
+    if (this.$route.params.id) {
+      this.app_id = this.$route.params.id  
+    }
     this.getAssetList();
     this.getData();
 
@@ -672,7 +682,7 @@ export default {
         .then(res => {
           let result = new Array();
           res.data.result.map(function(v) {
-            result.push({ value: v.name, id: v.id, owner: v.owner });
+            result.push({ value: v.name+" "+v.parent_name, id: v.id, owner: v.owner });
           });
           cb(result);
         });
@@ -691,7 +701,7 @@ export default {
         this.asset_options = res.data.result;
         
       });
-      this.$axios.get(this.asset_list_url + "?app_id=0").then(res => {
+      this.$axios.get(this.asset_list_url + "?app_id=0&page_size=99999").then(res => {
         this.asset_option_without_app = res.data.result;
       });
     },
@@ -727,10 +737,12 @@ export default {
     doCreate(e) {
       let cur_form = null;
 
-      if (this.$refs["createForm"]) {
+      if (this.$refs["createForm"]&&this.curFormName=="createForm") {
         cur_form = this.$refs["createForm"];
+        console.log("create")
       } else {
         cur_form = this.$refs["editForm"];
+        console.log("edit")
       }
       
       cur_form.validate(valid => {
@@ -741,7 +753,7 @@ export default {
          return
          }
 
-            this.$axios.post(this.add_url, trans_params(this.form)).then(res => {
+        this.$axios.post(this.add_url, trans_params(this.form)).then(res => {
         if (res.data.status == 1) {
           this.$message.success("操作成功");
           this.getData();
@@ -816,7 +828,8 @@ export default {
             page_index: this.cur_page,
             page_size: this.page_size,
             sort: this.sortcolumn,
-            direction: this.sortorder
+            direction: this.sortorder,
+            app_id:this.app_id
           }
         })
         .then(res => {
