@@ -27,7 +27,7 @@
         <el-button type="primary" icon="el-icon-search" @click="search" size="mini">搜索</el-button>
 
         <div style="float:right">
-
+        
           <el-button size="mini" icon="search" @click="dataDel()">删除</el-button>
         </div>
       </div>
@@ -48,6 +48,12 @@
         </el-table-column>
         <el-table-column prop="desc" label="描述" min-width="80"></el-table-column>
         <el-table-column prop="level" label="级别" min-width="80" sortable ></el-table-column>
+        <el-table-column prop="default" label="默认" min-width="80" sortable >
+          <template slot-scope="scope">
+            <span>{{  scope.row.default===1 ?"✓":"" }}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column prop="type" label="类型" min-width="80" sortable >
           <template slot-scope="scope">
             <span>{{  scope.row.type===1 ?"审核角色":"系统角色" }}</span>
@@ -55,6 +61,10 @@
         </el-table-column>
         <el-table-column label="操作" width="320">
           <template slot-scope="scope">
+            <el-button size="mini"   @click="setDefault(scope.row)">
+            设为默认  
+            </el-button>
+
             <span size="mini" v-tooltip="'编辑'" @click="handleEdit(scope.$index, scope.row)">
               <i class="el-iconbianji2 iconfont_no_margin sumeru_op_button"></i>
             </span>
@@ -163,6 +173,7 @@
             size="mini"
             type="text"
             name="task_name"
+            
           ></el-input>
         </el-form-item>
 
@@ -173,7 +184,8 @@
             show-checkbox
             node-key="id"
             ref="treeEdit"
-             default-expand-all
+            check-strictly
+            default-expand-all
           ></el-tree>
         </el-form-item>
 
@@ -204,6 +216,7 @@ export default {
       add_url: "/api/role/add",
       list_url: "/api/role/list",
       del_url: "/api/role/del",
+      set_default_url:"/api/role/default",
       del_list: new URLSearchParams(),
       tableData: [],
       select_word: "",
@@ -249,6 +262,18 @@ export default {
   },
 
   methods: {
+    setDefault(row){
+  this.$axios.post(this.set_default_url, trans_params({id:row.id})).then(res => {
+                    if (res.data.status == 1) {
+                      this.$message.success("操作成功");
+                      this.getData();
+                    } else
+                      this.$message.error(
+                        "操作失败, 错误码:" + res.data.status_code + res.data.msg
+                      );
+              
+                  });
+    },
     sortChange: function(column, prop, order) {
       this.sortcolumn = column.prop;
       this.sortorder = column.order;
@@ -268,7 +293,7 @@ export default {
     checkForm: function() {
       if (
         this.form.name &&
-        this.form.level 
+        this.form.level!=undefined
       ) {
         return true;
       }
@@ -278,7 +303,7 @@ export default {
       if (!this.form.name) {
         this.form_errors.push("请输入角色名");
       }
-      if (!this.form.level) {
+      if (this.form.level ==undefined) {
         this.form_errors.push("请输入权限等级");
       }
 
@@ -356,8 +381,12 @@ export default {
       this.editVisible = true;
       this.form = row;
       this.form.id  = row.id
+      let that = this
       this.$nextTick(function() {
-         this.$refs.treeEdit.setCheckedKeys(row.accesses)
+         console.log(this.$refs.treeEdit.getCheckedKeys())
+         that.$refs.treeEdit.setCheckedKeys(row.accesses)
+         console.log(row.accesses)
+         console.log(this.$refs.treeEdit.getCheckedKeys())
     })
     },
 
