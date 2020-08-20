@@ -691,7 +691,7 @@ export default {
         this.asset_options = res.data.result;
         
       });
-      this.$axios.get(this.asset_list_url + "?app_id=0").then(res => {
+      this.$axios.get(this.asset_list_url + "?app_id=0&page_size=99999").then(res => {
         this.asset_option_without_app = res.data.result;
       });
     },
