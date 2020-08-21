@@ -26,12 +26,12 @@
                 <span class="data-content insight_sensitive" type="text">{{viewvul.username}}</span>
               </el-form-item>
 
-              <el-form-item label="解决方案">
+              <el-form-item label="关联方案">
                 <span
                   style="color:409eff ;font-weight:bold;cursor:pointer;"
                   type="text"
                   @click="$router.push( {path:'/viewpaperdetail?id='+viewvul.article_id})"
-                >{{viewvul.article_name?viewvul.article_name:"无" }}</span>
+                >{{viewvul.article_name?viewvul.article_name:"" }}</span>
               </el-form-item>
             </el-form>
           </el-col>
@@ -86,7 +86,7 @@
         <div style="width:60%;">
           <div v-html="marked(filterXSS(viewvul.vul_poc)) " class="markdown-body insight_sensitive"></div>
         </div>
-
+       <hr style="margin-top:20px;margin-bottom:20px;margin-left:30%;margin-right:30%;background-color:#e8eaef;height: 1px;" />
         <div style="width:60%;">
           <div v-html="marked(filterXSS(viewvul.vul_solution))  " class="markdown-body"></div>
         </div>
