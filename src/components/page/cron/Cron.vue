@@ -54,9 +54,7 @@
 
         <el-table-column prop="eid" min-width="65" label="类型">
           <template slot-scope="scope">
-            <span
-            
-            >{{scope.row.eid }}</span>
+            <span>{{scope.row.eid }}</span>
           </template>
         </el-table-column>
 
@@ -233,80 +231,17 @@
         </el-form-item>
         <el-form-item label="扩展类型" prop="eid">
           <el-select v-model="form.eid" filterable placeholder="请选择">
-            <el-option
-              v-for="(key,value) in extension_list"
-              :key="key"
-              :label="key"
-              :value="value"
-            ></el-option>
+            <el-option v-for="value in extension_list" :key="value._id" :label="value.name" :value="value.eid"></el-option>
           </el-select>
         </el-form-item>
 
-  
         <el-form-item label="CRON表达式" prop="cron_expression">
-        {{form.crontab}}
-        <VueCronEditorBuefy v-model="form.crontab"
-        locale="test"
-        :custom-locales="{ test:local_lang }" />
-        </el-form-item>
-
-
-        <el-form-item label="关联资产" prop="asset_list">
-          <el-select
-            v-model="form.asset_list"
-            multiple
-            filterable
-            default-first-option
-            placeholder="请选择关联资产"
-          >
-            <el-option
-              v-for=" item in asset_option_without_app"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-              :disabled="item.app_id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="重要程度">
-          <el-radio-group v-model="form.level" size="mini">
-            <el-radio-button
-              v-for="(key,value) in static_config.ASSET_LEVEL"
-              :label="value"
-              v-bind:key="key"
-            >{{key}}</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item label="安全重要等级">
-          <el-radio-group v-model="form.sec_level" size="mini">
-            <el-radio-button
-              v-for="(key,value) in static_config.APP_SEC_LEVEL"
-              :label="value"
-              v-bind:key="key"
-            >{{key}}</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item label="部门" prop="group_name">
-          <el-autocomplete
-            v-model="form.group_name"
-            :fetch-suggestions="querySearchAsyncGroup"
-            placeholder="请输入内容"
-            @select="handleSelectGroup"
-          ></el-autocomplete>
-        </el-form-item>
-
-        <el-form-item label="负责人">{{form.group_owner}}</el-form-item>
-
-        <el-form-item label="安全官" prop="sec_owner_name">
-          <el-autocomplete
-            v-model="form.sec_owner_name"
-            :fetch-suggestions="querySearchAsync"
-            placeholder="请输入内容"
-            @select="handleSelect"
-          ></el-autocomplete>
+          {{form.crontab}}
+          <VueCronEditorBuefy
+            v-model="form.crontab"
+            locale="test"
+            :custom-locales="{ test:local_lang }"
+          />
         </el-form-item>
 
         <el-form-item label="状态">
@@ -319,32 +254,8 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="敏感数据条数">
-          <el-radio-group v-model="form.sensitive_data_count" size="mini">
-            <el-radio-button
-              v-for="(key,value) in static_config.APP_SENSITIVE_DATA_COUNT"
-              :label="value"
-              v-bind:key="key"
-            >{{key}}</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="允许宕机时长">
-          <el-radio-group v-model="form.downtime" size="mini">
-            <el-radio-button
-              v-for="(key,value) in static_config.APP_DOWNTIME"
-              :label="value"
-              v-bind:key="key"
-            >{{key}}</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item label="选项">
-          <el-checkbox v-model="form.is_open" true-label="1" false-label="0">外网</el-checkbox>
-          <el-checkbox v-model="form.is_https" true-label="1" false-label="0">HTTPS</el-checkbox>
-          <el-checkbox v-model="form.is_interface" true-label="1" false-label="0">接口</el-checkbox>
-        </el-form-item>
         <el-form-item label="说明">
-          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.comment"></el-input>
+          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.remark"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -474,7 +385,7 @@
           <el-checkbox v-model="form.is_interface" true-label="1" false-label="0">接口</el-checkbox>
         </el-form-item>
         <el-form-item label="说明">
-          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.comment"></el-input>
+          <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="form.remark"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -563,20 +474,19 @@
 </template>
 
 <script>
-
 import {
   getDateDiff_timestamp,
   formatDate,
   trans_params,
-  getStaticColors
+  getStaticColors,
 } from "@/utils/common";
 import { global_config } from "@/utils/global_config";
-import VueCronEditorBuefy from 'vue-cron-editor-buefy';
+import VueCronEditorBuefy from "vue-cron-editor-buefy";
 
 export default {
   name: "curd",
   template: "<cron/>",
-  components: {VueCronEditorBuefy },
+  components: { VueCronEditorBuefy },
   data() {
     var validateSecOwner = (rule, value, callback) => {
       console.log(rule, value);
@@ -591,35 +501,35 @@ export default {
     };
 
     return {
-      extension_list:[],
-      local_lang:{
-      every: "每",
-      mminutes: "分",
-      hoursOnMinute: "小时 ， 分钟为",
-      daysAt: "天,在",
-      at: "在",
-      onThe: "在",
-      dayOfEvery: "天, 每",
-      monthsAt: "月, 在",
-      everyDay: "每",
-      mon: "周一",
-      tue: "周二",
-      wed: "周三",
-      thu: "周四",
-      fri: "周五",
-      sat: "周六",
-      sun: "周日",
-      hasToBeBetween: "Has to be between",
-      and: "and",
-      minutes: "分钟",
-      hourly: "小时",
-      daily: "天",
-      weekly: "星期",
-      monthly: "月",
-      advanced: "自定义填写",
-      cronExpression: "cron 表达式:"
+      extension_list: [],
+      local_lang: {
+        every: "每",
+        mminutes: "分",
+        hoursOnMinute: "小时 ， 分钟为",
+        daysAt: "天,在",
+        at: "在",
+        onThe: "在",
+        dayOfEvery: "天, 每",
+        monthsAt: "月, 在",
+        everyDay: "每",
+        mon: "周一",
+        tue: "周二",
+        wed: "周三",
+        thu: "周四",
+        fri: "周五",
+        sat: "周六",
+        sun: "周日",
+        hasToBeBetween: "Has to be between",
+        and: "and",
+        minutes: "分钟",
+        hourly: "小时",
+        daily: "天",
+        weekly: "星期",
+        monthly: "月",
+        advanced: "自定义填写",
+        cronExpression: "cron 表达式:",
       },
-      cronExpression:'*/1 * * * *',
+      cronExpression: "*/1 * * * *",
       isChangeVisible: false,
       curFormName: "createForm",
       old_sec_owner: "",
@@ -633,6 +543,7 @@ export default {
       asset_option_without_app: [],
       form_errors: [],
       cur_entity: {},
+      extension_list_url: "/api/extension/list",
       user_list_url: "/api/user/list",
       group_list_url: "/api/group/list",
       asset_list_url: "/api/asset/select",
@@ -653,46 +564,47 @@ export default {
       form: {
         enable: "1",
         role_id: "",
-        sec_owner: ""
+        sec_owner: "",
       },
       editFrom: {},
       rules: {
         appname: [
-          { required: true, message: "请输入应用名称", trigger: "blur" }
+          { required: true, message: "请输入应用名称", trigger: "blur" },
         ],
         asset_list: [
-          { required: true, message: "请选择关联资产", trigger: "change" }
+          { required: true, message: "请选择关联资产", trigger: "change" },
         ],
         apptype: [
-          { required: true, message: "请选择应用类型", trigger: "change" }
+          { required: true, message: "请选择应用类型", trigger: "change" },
         ],
         group_name: [
-          { required: true, message: "请选择部门", trigger: "change" }
+          { required: true, message: "请选择部门", trigger: "change" },
         ],
         sec_owner_name: [
-          { required: true, message: "请选择安全官", trigger: "change" }
-        ]
+          { required: true, message: "请选择安全官", trigger: "change" },
+        ],
       },
       editRules: {
         appname: [
-          { required: true, message: "请输入应用名称", trigger: "blur" }
+          { required: true, message: "请输入应用名称", trigger: "blur" },
         ],
         asset_list: [
-          { required: true, message: "请选择关联应用", trigger: "change" }
+          { required: true, message: "请选择关联应用", trigger: "change" },
         ],
         apptype: [
-          { required: true, message: "请选择应用类型", trigger: "change" }
+          { required: true, message: "请选择应用类型", trigger: "change" },
         ],
         group_name: [
-          { required: true, message: "请选择部门", trigger: "change" }
-        ]
+          { required: true, message: "请选择部门", trigger: "change" },
+        ],
       },
-      static_config: global_config
+      static_config: global_config,
     };
   },
 
   created() {
     this.getAssetList();
+    this.getExtensionList()
     this.getData();
 
     let ui = JSON.parse(sessionStorage.getItem("userinfo"));
@@ -701,6 +613,7 @@ export default {
     } else {
       this.userinfo = { extension: {} };
     }
+
   },
   updated() {
     this.$desensitive();
@@ -721,10 +634,15 @@ export default {
     },
     statusNameFilter(status, name) {
       return global_config[name][status];
-    }
+    },
   },
 
   methods: {
+    getExtensionList() {
+      this.$axios.get(this.extension_list_url + "?page_size=99999").then((res) => {
+        this.extension_list = res.data.result;
+      });
+    },
     changeCron(val) {
       this.form.crontab = val;
     },
@@ -732,8 +650,8 @@ export default {
       let routes = this.$router.resolve({
         path: "/asset",
         query: {
-          app: app.id
-        }
+          app: app.id,
+        },
       });
       window.open(routes.href, "_blank");
     },
@@ -745,12 +663,12 @@ export default {
       this.$axios
         .get(this.user_list_url, {
           params: {
-            search: queryString
-          }
+            search: queryString,
+          },
         })
-        .then(res => {
+        .then((res) => {
           let result = new Array();
-          res.data.result.map(function(v) {
+          res.data.result.map(function (v) {
             result.push({ value: v.username, id: v.id });
           });
           cb(result);
@@ -760,12 +678,12 @@ export default {
       this.$axios
         .get(this.group_list_url, {
           params: {
-            search: queryString
-          }
+            search: queryString,
+          },
         })
-        .then(res => {
+        .then((res) => {
           let result = new Array();
-          res.data.result.map(function(v) {
+          res.data.result.map(function (v) {
             result.push({ value: v.name, id: v.id, owner: v.owner });
           });
           cb(result);
@@ -780,18 +698,18 @@ export default {
       this.form.group_id = item.id;
       if (item.owner) this.form.group_owner = item.owner;
     },
-    getAssetList: function() {
-      this.$axios.get(this.asset_list_url + "?page_size=99999").then(res => {
+    getAssetList: function () {
+      this.$axios.get(this.asset_list_url + "?page_size=99999").then((res) => {
         this.asset_options = res.data.result;
       });
       this.$axios
         .get(this.asset_list_url + "?app_id=0&page_size=99999")
-        .then(res => {
+        .then((res) => {
           this.asset_option_without_app = res.data.result;
         });
     },
 
-    sortChange: function(column, prop, order) {
+    sortChange: function (column, prop, order) {
       this.sortcolumn = column.prop;
       this.sortorder = column.order;
       this.getData();
@@ -801,13 +719,13 @@ export default {
       if (this.cur_entity.id) {
         this.$router.push({
           name: "editgroupuser",
-          params: this.cur_entity
+          params: this.cur_entity,
         });
       } else {
         this.$message.info("请选择数据");
       }
     },
-    checkForm: function() {
+    checkForm: function () {
       if (this.form.name) {
         return true;
       }
@@ -830,23 +748,20 @@ export default {
         console.log("edit");
       }
 
-      cur_form.validate(valid => {
+      cur_form.validate((valid) => {
         if (valid) {
-          if (this.form.sec_owner == null) {
-            this.$message.error("安全官未选择正确");
-            return;
-          }
-
-          this.$axios.post(this.add_url, trans_params(this.form)).then(res => {
-            if (res.data.status == 1) {
-              this.$message.success("操作成功");
-              this.getData();
-            } else if (!res.data.status) {
-              this.$message.error("操作失败, " + res.data.msg);
-            }
-            this.createVisible = false;
-            this.editVisible = false;
-          });
+          this.$axios
+            .post(this.add_url, trans_params(this.form))
+            .then((res) => {
+              if (res.data.status == 1) {
+                this.$message.success("操作成功");
+                this.getData();
+              } else if (!res.data.status) {
+                this.$message.error("操作失败, " + res.data.msg);
+              }
+              this.createVisible = false;
+              this.editVisible = false;
+            });
         } else {
           this.$message.error("提交失败，请填写相应信息");
         }
@@ -857,7 +772,7 @@ export default {
       this.form.app_id = this.cur_entity.id;
       this.$axios
         .post("/api/extension/log/add", trans_params(this.form))
-        .then(res => {
+        .then((res) => {
           if (res.data.status == 1) {
             this.$message.success("操作成功");
             this.getData();
@@ -872,7 +787,7 @@ export default {
     doSecTest(e) {
       this.$axios
         .post("/api/extension/run", trans_params(this.form))
-        .then(res => {
+        .then((res) => {
           if (res.data.status == 1) {
             this.$message.success("操作成功");
             this.getData();
@@ -887,7 +802,7 @@ export default {
     doCreateScheduler(e) {
       this.$axios
         .post("/api/app/extension/config", trans_params(this.form))
-        .then(res => {
+        .then((res) => {
           if (res.data.status == 1) {
             this.$message.success("操作成功");
             this.getData();
@@ -909,10 +824,10 @@ export default {
             page_index: this.cur_page,
             page_size: this.page_size,
             sort: this.sortcolumn,
-            direction: this.sortorder
-          }
+            direction: this.sortorder,
+          },
         })
-        .then(res => {
+        .then((res) => {
           this.tableData = res.data.result;
           this.total = res.data.total;
           this.cur_entity = {};
@@ -967,7 +882,7 @@ export default {
           this.$message.info("未选择任何数据");
           return;
         }
-        this.del_list = this.multipleSelection.map(function(item) {
+        this.del_list = this.multipleSelection.map(function (item) {
           return item.id;
         });
         to_del = this.del_list;
@@ -976,12 +891,12 @@ export default {
       this.$confirm("是否确认此操作", "提示", {
         confirmButtonText: "确认",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.$axios
             .post(this.del_url, trans_params({ id: to_del }))
-            .then(res => {
+            .then((res) => {
               if (res.data.status >= 1) {
                 this.getData();
                 this.$message.success("删除成功");
@@ -990,8 +905,8 @@ export default {
             });
         })
         .catch(() => {});
-    }
-  }
+    },
+  },
 };
 </script>
 
