@@ -208,12 +208,12 @@ export default {
               title: this.$t("title.ext"),
               permission: ["action.extension.ExtensionList"]
             },
-            {
-              icon: "iconfont el-iconwendangdocument69",
-              index: "cron",
-              title: this.$t("title.cron"),
-              permission: "default_show"
-            }
+            // {
+            //   icon: "iconfont el-iconwendangdocument69",
+            //   index: "cron",
+            //   title: this.$t("title.cron"),
+            //   permission: "default_show"
+            // }
           ]
         },
         

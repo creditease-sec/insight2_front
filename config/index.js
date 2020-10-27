@@ -11,11 +11,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/api':{
-            target: 'http://10.10.37.136:8888',
+            target: 'http://10.10.37.136:8000',
             changeOrigin: true
          },
          '/upload':{
-          target: 'http://10.10.37.136:8888',
+          target: 'http://10.10.37.136:8000',
           changeOrigin: true
        },
     },
